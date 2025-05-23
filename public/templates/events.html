@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Togetherness - All Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="navbar">
+            <a href="index.html" class="logo"><span>Together</span><span class="highlight">ness</span></a>
+            <!-- <div class="nav-buttons">
+                <a class="btn btn-dark" href="index.html">Home</a>
+                <a class="btn btn-primary" href="events.html">Events</a>
+            </div> -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="mobile-menu" id="mobile-menu">
+                <a class="btn btn-dark" href="index.html">Home</a>
+                <a class="btn btn-primary" href="events.html">Events</a>
+            </div>
+        </nav>
+        <div id="loading" class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="ml-3">Loading data...</p>
+        </div>
+        <div id="error-container" class="error-message" style="display: none;"></div>
+        <div id="events-page" class="page active">
+            <h1 class="section-title">Our Events</h1>
+            <div class="nav-tabs reveal-element" id="event-filters"></div>
+            <div class="events-search-bar mb-4" style="display: flex; align-items: center; gap: 1em;">
+                <input type="text" id="events-search-input" class="search-input" placeholder="Search events...">
+                <span id="events-search-count" class="text-gray-500 text-sm ml-2"></span>
+            </div>
+            <div class="bento-container" id="events-container"></div>
+        </div>
+    </div>
+    <footer>
+        <div>
+            <div class="foot">
+                <div class="mb-3">
+                    <h3 class="mb-3">Togetherness</h3>
+                    <p>Ahmedabad's best and most inclusive dance community.</p>
+                </div>
+                <div class="mb-3">
+                    <h3 class="mb-3">Contact</h3>
+                    <p id="footer-contact">Sway Dance Studio, Shivranjani</p>
+                    <div class="social-links" id="footer-social-links">
+                        <!-- Social links will be injected here by script.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Your Website - Sheetzu</title>
+    <link rel="stylesheet" href="/templates/styles.css">
+    <style>
+        .error {
+            color: #dc2626;
+            background-color: #fee2e2;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .success {
+            color: #059669;
+            background-color: #d1fae5;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
+        .form-group small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #6b7280;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        .container {
+            max-width: 32rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Website</h1>
+        <form id="registrationForm" class="registration-form">
+            <div class="form-group">
+                <label for="username">Choose a username:</label>
+                <input type="text" id="username" name="username" required 
+                       pattern="[a-zA-Z0-9-]+" 
+                       title="Only letters, numbers, and hyphens are allowed">
+                <small>This will be used in your subdomain (e.g., username.sheetzu.com)</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="sheetId">Google Sheet ID:</label>
+                <input type="text" id="sheetId" name="sheetId" required>
+                <small>
+                    Enter the ID from your Google Sheet URL (the long string between /d/ and /edit)<br>
+                    Example: For https://docs.google.com/spreadsheets/d/1Q4GO-X2xusovn2rdWD4-y8NACz5f7dnGENY6bddaJ4k/edit<br>
+                    The ID is: 1Q4GO-X2xusovn2rdWD4-y8NACz5f7dnGENY6bddaJ4k
+                </small>
+            </div>
+
+            <button type="submit">Create Website</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const sheetId = document.getElementById('sheetId').value;
+            const resultDiv = document.getElementById('result');
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Creating...';
+                
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, sheetId }),
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>Success! Your website is ready.</h3>
+                            <p>Visit your website at: <a href="https://${data.domain}" target="_blank">${data.domain}</a></p>
+                            <p><strong>Important:</strong> Make sure you've shared your Google Sheet with the service account email shown in the server logs.</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h3>Error</h3>
+                            <p>${data.error}</p>
+                            <p><strong>Troubleshooting tips:</strong></p>
+                            <ul>
+                                <li>Make sure your Google Sheet ID is correct</li>
+                                <li>Ensure your Google Sheet is shared with the service account email</li>
+                                <li>Check that your Google Sheet has the required sheets: Events/Products, Settings, and WebPages</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>Error</h3>
+                        <p>Failed to register. Please try again.</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>
+                `;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create Website';
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Togetherness - Dance Community</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- Custom cursor elements -->
+    <!-- <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor-follower" id="cursor-follower"></div> -->
+    <!-- Background glow circles -->
+    <div class="glow-circle pink"></div>
+    <div class="glow-circle blue"></div>
+    <div class="glow-circle green"></div>
+    <div class="glow-circle yellow"></div>
+    <div class="app-container">
+        <nav class="navbar">
+            <a href="index.html" class="logo"><span>Together</span><span class="highlight">ness</span></a>
+            <!-- <div class="nav-buttons">
+                <a class="btn btn-dark" href="index.html">Home</a>
+                <a class="btn btn-primary" href="events.html">Events</a>
+            </div> -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="mobile-menu" id="mobile-menu">
+                <a class="btn btn-dark" href="index.html">Home</a>
+                <a class="btn btn-primary" href="events.html">Events</a>
+            </div>
+        </nav>
+        <div id="loading" class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="ml-3">Loading data...</p>
+        </div>
+        <div id="error-container" class="error-message" style="display: none;"></div>
+        <div id="home-page" class="page active">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <p class="subtitle reveal-element">Move your body,<br>Meet real people.</p>
+                    <!-- <p class="subtitle reveal-element">Stuck in a chair, scrolling your life away?</p> -->
+                    <h1 class="glow reveal-element">
+                        <span class="text-gradient-pink-purple">start </span>social <span class="highlight">dancing</span>
+                    </h1>
+                    <!-- <p class="subtitle reveal-element">helps you move your body, and meet real people offline.</p> -->
+                    <div class="hero-buttons reveal-element">
+                        <a class="btn btn-neon-pink" href="events.html">
+                            <span>Events</span>
+                            <div class="btn-icon"><i class="fas fa-arrow-right"></i></div>
+                        </a>
+                        <button class="btn btn-outline">
+                            <span>Learn More</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <div id="featured-events-slider" class="featured-events-slider">
+                <!-- Featured events will be loaded here -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            <!-- <h2 class="section-heading reveal-element">Dance <span class="text-gradient-pink-purple">Categories</span></h2> -->
+            <div class="grid-container-menu">
+
+            </div>
+            <!-- <div class="spacer"></div> -->
+            <div id="about-section" class="grid-container">
+                <div class="card span-8 sm-span-12 reveal-element">
+                    <h2 class="card-title"></h2>
+                    <div id="about-content" class="about-content"></div>
+                </div>
+                <div class="card span-4 sm-span-12 reveal-element">
+                    <h3 class="card-title" style="text-align: center !important;"></h3>
+                    <!-- <iframe src="https://togetherness-in.notion.site/ebd/1df0e3d02e6181f5b533c9bdaeec3b02" width="100%" height="600" frameborder="0" allowfullscreen /> -->
+                    <!-- <div class="upcoming-events">
+                        <div class="upcoming-event">
+                            <div class="event-date-badge-modern">
+                                <span class="day">25</span>
+                                <span class="month">APR</span>
+                            </div>
+                            <div class="upcoming-event-details">
+                                <h4>Bachata Night</h4>
+                                <p class="small">8:00 PM · City Center</p>
+                            </div>
+                        </div>
+                        <div class="upcoming-event">
+                            <div class="event-date-badge-modern">
+                                <span class="day">30</span>
+                                <span class="month">APR</span>
+                            </div>
+                            <div class="upcoming-event-details">
+                                <h4>Salsa Workshop</h4>
+                                <p class="small">6:30 PM · Studio 9</p>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="upcoming-events"><img src="/VivekAdvani_Togetherness.png" alt="Meet the founder" class="founder-image">
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="spacer"></div> -->
+            <div id="contact-section" class="grid-container">
+                <div class="card span-12 reveal-element">
+                    <h2 class="card-title">Connect With Us</h2>
+                    <div id="contact-content" class="contact-grid"></div>
+                    <!-- <div class="contact-social" id="contact-social-links"></div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div>
+            <div class="foot">
+                <div class="mb-3">
+                    <h3 class="mb-3">Togetherness</h3>
+                    <p>Ahmedabad's best and most inclusive dance community.</p>
+                </div>
+                <div class="mb-3">
+                    <h3 class="mb-3">Contact</h3>
+                    <p id="footer-contact">Sway Dance Studio, Shivranjani</p>
+                    <div class="social-links" id="footer-social-links">
+                        <!-- Social links will be injected here by script.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
