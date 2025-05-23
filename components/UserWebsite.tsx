@@ -22,20 +22,34 @@ export default function UserWebsite({ sheetId, isPaid, username }: UserWebsitePr
   useEffect(() => {
     async function fetchSheetData() {
       try {
+        console.log('Fetching data for sheet:', sheetId)
+        
         // Fetch events data
-        const eventsResponse = await fetch(`/api/sheets/Events/Products?sheetId=${sheetId}`)
-        if (!eventsResponse.ok) throw new Error('Failed to fetch events data')
+        const eventsResponse = await fetch(`/api/sheets/Events_Products?sheetId=${sheetId}`)
+        if (!eventsResponse.ok) {
+          const errorData = await eventsResponse.json()
+          throw new Error(`Failed to fetch events data: ${errorData.error || eventsResponse.statusText}`)
+        }
         const eventsData = await eventsResponse.json()
+        console.log('Events data:', eventsData)
 
         // Fetch settings data
         const settingsResponse = await fetch(`/api/sheets/Settings?sheetId=${sheetId}`)
-        if (!settingsResponse.ok) throw new Error('Failed to fetch settings data')
+        if (!settingsResponse.ok) {
+          const errorData = await settingsResponse.json()
+          throw new Error(`Failed to fetch settings data: ${errorData.error || settingsResponse.statusText}`)
+        }
         const settingsData = await settingsResponse.json()
+        console.log('Settings data:', settingsData)
 
         // Fetch webpages data
         const webpagesResponse = await fetch(`/api/sheets/WebPages?sheetId=${sheetId}`)
-        if (!webpagesResponse.ok) throw new Error('Failed to fetch webpages data')
+        if (!webpagesResponse.ok) {
+          const errorData = await webpagesResponse.json()
+          throw new Error(`Failed to fetch webpages data: ${errorData.error || webpagesResponse.statusText}`)
+        }
         const webpagesData = await webpagesResponse.json()
+        console.log('Webpages data:', webpagesData)
 
         setData({
           events: eventsData.values || [],
@@ -43,8 +57,8 @@ export default function UserWebsite({ sheetId, isPaid, username }: UserWebsitePr
           webpages: webpagesData.values || []
         })
       } catch (err) {
-        setError('Failed to load website data')
         console.error('Error fetching sheet data:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load website data')
       } finally {
         setLoading(false)
       }
@@ -66,7 +80,18 @@ export default function UserWebsite({ sheetId, isPaid, username }: UserWebsitePr
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500 text-xl">{error}</div>
+        <div className="max-w-md p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Website</h2>
+          <p className="text-gray-700 mb-4">{error}</p>
+          <p className="text-sm text-gray-500">
+            Please make sure:
+            <ul className="list-disc list-inside mt-2">
+              <li>Your Google Sheet has sheets named "Events/Products", "Settings", and "WebPages"</li>
+              <li>The sheet is shared with the service account email</li>
+              <li>The sheet ID is correct</li>
+            </ul>
+          </p>
+        </div>
       </div>
     )
   }
