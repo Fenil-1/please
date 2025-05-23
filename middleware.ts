@@ -6,6 +6,11 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get("host") || ""
   const url = request.nextUrl.clone()
 
+  // Skip if this is already a rewritten request
+  if (request.headers.get("x-tenant-id")) {
+    return NextResponse.next()
+  }
+
   // Extract subdomain from host (e.g. username.sheetzu.com or username.localhost)
   const subdomain = host.split('.')[0]
   const domain = host.split('.').slice(1).join('.')
