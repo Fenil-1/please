@@ -40,8 +40,11 @@ export function middleware(request: NextRequest) {
       })
     }
     
-    // If tenant not found, redirect to main domain
-    return NextResponse.redirect(new URL('/', request.url))
+    // If tenant not found, redirect to main domain with explicit host
+    const mainDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'fenil.life'
+    const redirectUrl = new URL('/', request.url)
+    redirectUrl.host = mainDomain
+    return NextResponse.redirect(redirectUrl)
   }
 
   // For the main domain, continue as normal
