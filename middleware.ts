@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
   
   // Check if this is a valid subdomain request
   const isSubdomain = !reserved.includes(subdomain) && 
-    (domain === 'sheetzu.com' || domain === 'localhost:3000' || domain === 'localhost')
+    (domain === 'sheetzu.com' || domain === 'localhost:3000' || domain === 'localhost' || domain === 'fenil.life')
 
   if (isSubdomain) {
     // Get tenant by domain
