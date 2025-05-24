@@ -1,13 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { google } from 'googleapis'
 
-// Initialize Google Sheets API
-const auth = new google.auth.GoogleAuth({
-  credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS || '{}'),
-  scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-})
+// Initialize Google Sheets API with better error handling
+let auth: any;
+let sheets: any;
 
-const sheets = google.sheets({ version: 'v4', auth })
+try {
+  // Option 1: Use JSON credentials (your current approach)
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    
+    // Validate that required fields exist
+    if (!credentials.client_email || !credentials.private_key) {
+      throw new Error('Invalid GOOGLE_APPLICATION_CREDENTIALS: missing client_email or private_key');
+    }
+    
+    auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+  }
+  // Option 2: Use separate environment variables (fallback)
+  else if (process.env.GOOGLE_SHEETS_CLIENT_EMAIL && process.env.GOOGLE_SHEETS_PRIVATE_KEY) {
+    auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      },
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+  }
+  else {
+    throw new Error('Missing Google Sheets credentials. Please set either GOOGLE_APPLICATION_CREDENTIALS or both GOOGLE_SHEETS_CLIENT_EMAIL and GOOGLE_SHEETS_PRIVATE_KEY');
+  }
+
+  sheets = google.sheets({ version: 'v4', auth });
+} catch (error) {
+  console.error('Failed to initialize Google Sheets API:', error);
+}
 
 // Map URL-friendly sheet names to actual sheet names
 const SHEET_NAME_MAP: { [key: string]: string } = {
@@ -21,6 +51,14 @@ export async function GET(
   { params }: { params: { sheetName: string } }
 ) {
   try {
+    // Check if Google Sheets API was initialized successfully
+    if (!sheets || !auth) {
+      return NextResponse.json(
+        { error: 'Google Sheets API not properly configured. Check your environment variables.' },
+        { status: 500 }
+      )
+    }
+
     // Get sheetId from query parameters
     const searchParams = request.nextUrl.searchParams
     const sheetId = searchParams.get('sheetId')
@@ -31,7 +69,7 @@ export async function GET(
         { status: 400 }
       )
     }
-    
+        
     // Convert URL-friendly sheet name to actual sheet name
     const actualSheetName = SHEET_NAME_MAP[params.sheetName] || params.sheetName
     console.log(`Fetching sheet "${actualSheetName}" from spreadsheet ${sheetId}`)
@@ -82,4 +120,4 @@ export async function GET(
       { status: 500 }
     )
   }
-} 
+}
