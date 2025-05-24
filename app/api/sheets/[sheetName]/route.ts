@@ -31,7 +31,7 @@ export async function GET(
         { status: 400 }
       )
     }
-
+    
     // Convert URL-friendly sheet name to actual sheet name
     const actualSheetName = SHEET_NAME_MAP[params.sheetName] || params.sheetName
     console.log(`Fetching sheet "${actualSheetName}" from spreadsheet ${sheetId}`)

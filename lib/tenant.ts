@@ -16,8 +16,8 @@ const tenants: Map<string, Tenant> = new Map();
 export class TenantService {
   private static getAuth() {
     try {
-      const credentials = process.env.GOOGLE_APPLICATION_CREDENTIALS 
-        ? JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS)
+      const credentials = process.env.GOOGLE_CREDENTIALS 
+        ? JSON.parse(process.env.GOOGLE_CREDENTIALS)
         : {};
       
       return new google.auth.GoogleAuth({
