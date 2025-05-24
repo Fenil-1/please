@@ -4,9 +4,9 @@ import SheetzuSignupInline from '@/components/SheetzuSignupInline'
 
 export default async function Home() {
   const headersList = headers()
-  const sheetId = headersList.get('x-sheet-id')
-  const username = headersList.get('x-username')
-  const isPaid = headersList.get('x-is-paid') === 'true'
+  const sheetId = (await headersList).get('x-sheet-id')
+  const username = (await headersList).get('x-username')
+  const isPaid = (await headersList).get('x-is-paid') === 'true'
 
   // If we have a sheetId, this is a subdomain request
   if (sheetId && username) {
